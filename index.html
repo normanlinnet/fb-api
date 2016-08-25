@@ -1,0 +1,73 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>FB粉絲專頁留言分析工具</title>
+</head>
+
+<body>
+  <div id="fb-root"></div>
+
+  <div align="center">
+    <h2>FB粉絲專頁留言分析工具</h2>
+
+    <div id="status" style="visibility:hidden">
+      Click on Below Image to start the demo:
+      <br/>
+      <img src="" style="cursor:pointer;" onclick="Login()" />
+
+    </div>
+    本頁面撈取各粉絲專頁較積極留言之粉絲，供專頁管理人員分析
+    <br> 以下為撈取規則：
+    <br> 1.撈取粉絲專頁最新50筆貼文資料
+    <br> 2.取得50筆貼文之所有回應貼文
+    <br> 3.依照留言ID做歸類，顯示留言超過五則之帳號
+    <br> 4.本功能可同時載入多個專頁分析
+    <br>
+    <br> 操作方式：
+    <br> 先載入貼文資料，下方區塊會出現待分析ID，產生完成後再按分析即可
+    <p>若分析後僅出現undefined連結，代表該專頁近期無人留言超過五則</p>
+    <input id='page' type='text' placeholder="在此輸入想分析的專頁ID">
+    <input type='button' onclick='getFanInfo("test");' value="載入自訂義" />
+    <br>
+    <br>或者試試這些專頁：
+    <input type='button' onclick='getFanInfo("myudn");' value="載入udn" />
+    <input type='button' onclick='getFanInfo("cnanewstaiwan");' value="載入中央社" />
+    <input type='button' onclick='getFanInfo("CTfans");' value="載入中時" />
+
+    <p>
+      <textarea id="members" rows="10" cols="100%" disabled="disabled"></textarea>
+    </p>
+    <div id="ayn">
+      <p></p>
+    </div>
+    <div id="message">
+
+    </div>
+    <div id="status2">
+    </div>
+    <div id="status3">
+    </div>
+  </div>
+
+  <script>
+    (function(i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function() {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-22640517-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script type="text/javascript" src="./app.js"></script>
+
+</body>
+
+</html>
