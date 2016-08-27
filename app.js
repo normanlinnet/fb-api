@@ -12,61 +12,85 @@
   ref.parentNode.insertBefore(js, ref);
 }(document));
 
+// Loading animation
+function inProcess() {
+  document.getElementById('ayn').style.visibility = "hidden";
+  document.getElementsByClassName('spinner')[0].style.display = 'block';
+}
+function finished() {
+  document.getElementsByClassName('spinner')[0].style.display = 'none';
+  document.getElementById('ayn').style.visibility = "visible";
+}
 
+// Data object
 var fbApiData = {};
+var processNo = 0;
 
+
+// Get Fan Info
 function getFanInfo(page) {
+
+  inProcess();
 
   var getUrl = '/' + page + '/posts?fields=story,status_type,story_tags,full_picture,created_time,id,message&limit=50&access_token=252632974766472|umIeZwLxnbq9NLOlWidkkWW8tSM';
 
   FB.api(getUrl, function(response) {
-    for (var i = 0; i < response.data.length; i++) {
-      getComment(page, response.data[i].message, response.data[i].id);
+    processNo = 0;
+    var totalPost = response.data.length;
+
+    for (var i = 0; i < totalPost; i++) {
+      getComment(totalPost, page, response.data[i].message, response.data[i].id);
     }
   });
 }
 
-function getComment(page, message, postid) {
+
+// Get Comments
+function getComment(totalPost, page, message, postid) {
 
   var getUrl = '/' + postid + '/comments?limit=1000&access_token=252632974766472|umIeZwLxnbq9NLOlWidkkWW8tSM';
 
   FB.api(getUrl, function(response) {
 
-    for (var key in response.data) {
+    for (var j = 0; j < response.data.length; j++) {
 
-      var userId = response.data[key].from.id;
+      var userId = response.data[j].from.id;
 
       if (!fbApiData[userId]) {
         fbApiData[userId] = {
-          name: response.data[key].from.name,
+          name: response.data[j].from.name,
           data: []
         };
       }
 
       fbApiData[userId].data.push({
         page: page,
-        created_time: response.data[key].created_time,
+        created_time: response.data[j].created_time,
         post: message,
-        comment: response.data[key].message,
-        commentId: response.data[key].id
+        comment: response.data[j].message,
+        commentId: response.data[j].id
       });
 
     }
+
+    // 偵測是否完成
+    processNo++;
+    if (processNo === totalPost) {
+      finished();
+    }
+
   });
 }
 
+
+// Count Members
 function countMembers() {
-  console.log(fbApiData);
 
   for (var key in fbApiData) {
-    // var fbApiData[key].data = fbApiData[key].data;
-
 
     if (fbApiData[key].data.length > 4) {
 
       var commentData = '';
-      console.log('--');
-      console.log(fbApiData[key].data);
 
       for (var i = 0; i < fbApiData[key].data.length; i++) {
 
@@ -78,44 +102,3 @@ function countMembers() {
     }
   }
 }
-
-function getPhoto() {
-  FB.api('/me/picture?type=normal', function(response) {
-
-    var str = "<br/><b>Pic</b> : <img src='" + response.data.url + "'/>";
-    document.getElementById("status").innerHTML += str;
-
-  });
-
-}
-
-function Logout() {
-  FB.logout(function() {
-    document.location.reload();
-  });
-}
-
-function unique2(array) {
-  var n = {},
-    r = [],
-    len = array.length,
-    val, type;
-  for (var i = 0; i < array.length; i++) {
-    val = array[i];
-    type = typeof val;
-    if (!n[val]) {
-      n[val] = [type];
-      r.push(val);
-    } else if (n[val].indexOf(type) < 0) {
-      n[val].push(type);
-      r.push(val);
-    }
-  }
-  return r;
-}
-
-
-
-setTimeout(function () {
-  getFanInfo('myudn');
-}, 4000);

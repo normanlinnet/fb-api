@@ -3,6 +3,40 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>FB粉絲專頁留言分析工具</title>
+
+  <style media="screen">
+    .spinner {
+      display: none;
+      width: 40px;
+      height: 40px;
+      background-color: #333;
+      border-radius: 100%;
+      -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+      animation: sk-scaleout 1.0s infinite ease-in-out;
+    }
+
+    @-webkit-keyframes sk-scaleout {
+      0% {
+        -webkit-transform: scale(0)
+      }
+      100% {
+        -webkit-transform: scale(1.0);
+        opacity: 0;
+      }
+    }
+
+    @keyframes sk-scaleout {
+      0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+      }
+      100% {
+        -webkit-transform: scale(1.0);
+        transform: scale(1.0);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -38,7 +72,9 @@
     <p>
       <textarea id="members" rows="10" cols="100%" disabled="disabled"></textarea>
     </p>
-    <div id="ayn">
+
+    <div class="spinner"></div>
+    <div id="ayn" style="margin-bottom: 50px; visibility: hidden;">
       <input type='button' onclick='countMembers();' value='分析專頁留言' />
     </div>
     <div id="message">
